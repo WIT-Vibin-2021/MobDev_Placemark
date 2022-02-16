@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/layout/activity_placemark.xml" value="0.17300724637681159" />
+        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/drawable/ic_launcher_background.xml" value="0.207" />
+        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/layout/activity_placemark.xml" value="0.1" />
+        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/layout/activity_placemark_list.xml" value="0.19157608695652173" />
+        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/layout/card_placemark.xml" value="0.18704710144927536" />
+        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/menu/menu_main.xml" value="1.475" />
+        <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.207" />
       </map>
     </option>
   </component>
