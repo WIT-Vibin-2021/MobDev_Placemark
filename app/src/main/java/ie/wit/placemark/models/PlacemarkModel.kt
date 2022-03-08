@@ -1,5 +1,12 @@
 package ie.wit.placemark.models
 
+import android.net.Uri
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-data class PlacemarkModel(var title: String = "",
-                          var description: String="")
+
+@Parcelize
+data class PlacemarkModel(var id: Long = 0,
+                          var title: String = "",
+                          var description: String = "",
+                          var image: Uri = Uri.EMPTY) : Parcelable

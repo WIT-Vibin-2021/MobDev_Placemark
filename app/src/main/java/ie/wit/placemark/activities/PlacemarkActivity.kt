@@ -1,13 +1,18 @@
 package ie.wit.placemark.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ie.wit.placemark.R
 import ie.wit.placemark.databinding.ActivityPlacemarkBinding
+import ie.wit.placemark.helpers.showImagePicker
 import ie.wit.placemark.models.PlacemarkModel
 import ie.wit.placemark.main.MainApp
 import timber.log.Timber
@@ -16,11 +21,11 @@ import timber.log.Timber.i
 class PlacemarkActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlacemarkBinding
     var placemark = PlacemarkModel()
-    //val placemarks = ArrayList<PlacemarkModel>()
-    //var app : MainApp? = null
     lateinit var app: MainApp
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var edit = false
         super.onCreate(savedInstanceState)
 
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
@@ -31,26 +36,45 @@ class PlacemarkActivity : AppCompatActivity() {
 
         //Timber.plant(Timber.DebugTree())
         app = application as MainApp
+
         i("Placemark Activity started...")
 
-        binding.btnAdd.setOnClickListener() {
-
-            placemark.title= binding.placemarkTitle.text.toString()
-            placemark.description= binding.description.text.toString()
-            if (placemark.title.isNotEmpty()) {
-                app.placemarks.add(placemark.copy())
-                i("add Button Pressed: ${placemark}")
-                for (i in app.placemarks.indices)
-                { i("Placemark[$i]:${app.placemarks[i]}")}
-                setResult(RESULT_OK)
-                finish()
-            }
-            else {
-                Snackbar
-                    .make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
-                    .show()
+        if (intent.hasExtra("placemark_edit")) {
+            edit = true
+            placemark = intent.extras?.getParcelable("placemark_edit")!!
+            binding.placemarkTitle.setText(placemark.title)
+            binding.description.setText(placemark.description)
+            binding.btnAdd.setText(R.string.save_placemark)
+            Picasso.get()
+                .load(placemark.image)
+                .into(binding.placemarkImage)
+            if (placemark.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_placemark_image)
             }
         }
+
+        binding.btnAdd.setOnClickListener() {
+            placemark.title = binding.placemarkTitle.text.toString()
+            placemark.description = binding.description.text.toString()
+
+            if (placemark.title.isEmpty()) {
+                Snackbar.make(it,R.string.enter_placemark_title, Snackbar.LENGTH_LONG)
+                    .show()
+            }
+            else {
+                if (edit) {
+                    app.placemarks.update(placemark.copy())
+                } else {
+                    app.placemarks.create(placemark.copy())
+                }
+            }
+            setResult(RESULT_OK)
+            finish()
+        }
+        binding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+        registerImagePickerCallback()
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_placemark, menu)
@@ -63,5 +87,23 @@ class PlacemarkActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                            placemark.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(placemark.image)
+                                .into(binding.placemarkImage)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 }
