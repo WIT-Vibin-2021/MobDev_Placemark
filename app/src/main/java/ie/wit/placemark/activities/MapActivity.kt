@@ -16,7 +16,10 @@ import ie.wit.placemark.R
 import ie.wit.placemark.databinding.ActivityMapBinding
 import ie.wit.placemark.models.Location
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarkerDragListener {
+class MapActivity : AppCompatActivity(),
+                    OnMapReadyCallback,
+                    GoogleMap.OnMarkerDragListener,
+                    GoogleMap.OnMarkerClickListener  {
     private lateinit var map: GoogleMap
     var location = Location()
 
@@ -42,6 +45,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
         map.setOnMarkerDragListener(this)
+        map.setOnMarkerClickListener(this)
     }
 
     override fun onMarkerDragStart(marker: Marker) {
@@ -62,5 +66,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
         super.onBackPressed()
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(location.lat, location.lng)
+        marker.snippet = "GPS : $loc"
+        return false
     }
 }
