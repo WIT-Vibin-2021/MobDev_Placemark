@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/layout/activity_map.xml" value="0.1911231884057971" />
-        <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/layout/activity_placemark.xml" value="0.1" />
+        <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/layout/activity_placemark.xml" value="0.152" />
+        <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/layout/activity_placemark_maps.xml" value="0.1911231884057971" />
         <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/layout/card_placemark.xml" value="0.1911231884057971" />
+        <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/layout/content_placemark_maps.xml" value="0.1911231884057971" />
+        <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/menu/menu_main.xml" value="0.25" />
+        <entry key="..\:/WIT/Sem 2/Mob Dev/Placemark/app/src/main/res/menu/menu_placemark.xml" value="0.25" />
         <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/drawable/ic_launcher_background.xml" value="0.207" />
         <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/layout/activity_placemark.xml" value="0.1" />
         <entry key="..\:/WIT/Sem 2/Placemark/app/src/main/res/layout/activity_placemark_list.xml" value="0.19157608695652173" />

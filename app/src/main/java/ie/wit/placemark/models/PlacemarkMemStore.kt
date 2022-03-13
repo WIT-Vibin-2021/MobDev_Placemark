@@ -1,4 +1,5 @@
 package ie.wit.placemark.models
+
 import timber.log.Timber.i
 
 var lastId = 0L
@@ -8,6 +9,7 @@ internal fun getId(): Long {
 }
 
 class PlacemarkMemStore: PlacemarkStore {
+
     val placemarks = ArrayList<PlacemarkModel>()
 
     override fun findAll(): List<PlacemarkModel> {
@@ -19,6 +21,7 @@ class PlacemarkMemStore: PlacemarkStore {
         placemarks.add(placemark)
         logAll()
     }
+
     override fun update(placemark: PlacemarkModel) {
         var foundPlacemark: PlacemarkModel? = placemarks.find { p -> p.id == placemark.id }
         if (foundPlacemark != null) {
@@ -31,6 +34,10 @@ class PlacemarkMemStore: PlacemarkStore {
             logAll()
         }
     }
+    override fun delete(placemark: PlacemarkModel) {
+        placemarks.remove(placemark)
+    }
+
     fun logAll() {
         placemarks.forEach{ i("${it}") }
     }

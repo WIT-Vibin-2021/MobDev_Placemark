@@ -34,14 +34,12 @@ class MapActivity : AppCompatActivity(),
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
             .title("Placemark")
             .snippet("GPS : $loc")
             .draggable(true)
             .position(loc)
-
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
         map.setOnMarkerDragListener(this)
@@ -61,6 +59,12 @@ class MapActivity : AppCompatActivity(),
 
     }
 
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(location.lat, location.lng)
+        marker.snippet = "GPS : $loc"
+        return false
+    }
+
     override fun onBackPressed() {
         val resultIntent = Intent()
         resultIntent.putExtra("location", location)
@@ -69,9 +73,5 @@ class MapActivity : AppCompatActivity(),
         super.onBackPressed()
     }
 
-    override fun onMarkerClick(marker: Marker): Boolean {
-        val loc = LatLng(location.lat, location.lng)
-        marker.snippet = "GPS : $loc"
-        return false
-    }
+
 }

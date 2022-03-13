@@ -20,15 +20,17 @@ import timber.log.Timber
 import timber.log.Timber.i
 
 class PlacemarkActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityPlacemarkBinding
     var placemark = PlacemarkModel()
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     //var location = Location(52.245696, -7.139102, 15f)
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        var edit = false
+         edit = false
         super.onCreate(savedInstanceState)
 
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
@@ -37,7 +39,6 @@ class PlacemarkActivity : AppCompatActivity() {
         binding.toolbarAdd.title=title
         setSupportActionBar(binding.toolbarAdd)
 
-        //Timber.plant(Timber.DebugTree())
         app = application as MainApp
 
         i("Placemark Activity started...")
@@ -71,12 +72,15 @@ class PlacemarkActivity : AppCompatActivity() {
                     app.placemarks.create(placemark.copy())
                 }
             }
+            i("add Button Pressed: $placemark")
             setResult(RESULT_OK)
             finish()
         }
+
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher,this)
         }
+
         binding.placemarkLocation.setOnClickListener {
             val location = Location(52.245696, -7.139102, 15f)
             if (placemark.zoom != 0f) {
@@ -89,22 +93,29 @@ class PlacemarkActivity : AppCompatActivity() {
             mapIntentLauncher.launch(launcherIntent)
         }
 
-
         registerImagePickerCallback()
         registerMapCallback()
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_placemark, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_delete -> {
+                app.placemarks.delete(placemark)
+                finish()
+            }
             R.id.item_cancel -> {
                 finish()
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -129,6 +140,7 @@ class PlacemarkActivity : AppCompatActivity() {
                 }
             }
     }
+
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
