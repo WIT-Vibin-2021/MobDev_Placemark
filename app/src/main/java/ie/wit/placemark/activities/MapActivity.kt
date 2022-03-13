@@ -58,6 +58,7 @@ class MapActivity : AppCompatActivity(),
         location.lat = marker.position.latitude
         location.lng = marker.position.longitude
         location.zoom = map.cameraPosition.zoom
+
     }
 
     override fun onBackPressed() {

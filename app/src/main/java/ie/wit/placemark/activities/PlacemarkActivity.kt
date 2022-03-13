@@ -75,7 +75,7 @@ class PlacemarkActivity : AppCompatActivity() {
             finish()
         }
         binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
+            showImagePicker(imageIntentLauncher,this)
         }
         binding.placemarkLocation.setOnClickListener {
             val location = Location(52.245696, -7.139102, 15f)
@@ -113,10 +113,16 @@ class PlacemarkActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
-                            placemark.image = result.data!!.data!!
+
+                            val image = result.data!!.data!!
+                            contentResolver.takePersistableUriPermission(image,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            placemark.image = image
+
                             Picasso.get()
                                 .load(placemark.image)
                                 .into(binding.placemarkImage)
+                            binding.chooseImage.setText(R.string.change_placemark_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
