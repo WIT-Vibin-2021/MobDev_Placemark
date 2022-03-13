@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso
 import ie.wit.placemark.databinding.ActivityPlacemarkMapsBinding
 import ie.wit.placemark.databinding.ContentPlacemarkMapsBinding
 import ie.wit.placemark.main.MainApp
+import ie.wit.placemark.models.PlacemarkModel
 
 class PlacemarkMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
@@ -46,7 +47,10 @@ class PlacemarkMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListen
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        contentBinding.currentTitle.text = marker.title
+        val foundPlacemark:PlacemarkModel?=app.placemarks.findAll().find { p -> p.id == marker.tag }
+        contentBinding.currentTitle.text = foundPlacemark?.title
+        contentBinding.currentDescription.text = foundPlacemark?.description
+        Picasso.get().load(foundPlacemark?.image).into(contentBinding.currentImage)
         return false
     }
 
