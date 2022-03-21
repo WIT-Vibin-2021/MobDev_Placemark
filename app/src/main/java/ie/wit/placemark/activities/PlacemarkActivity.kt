@@ -30,7 +30,7 @@ class PlacemarkActivity : AppCompatActivity() {
     var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-         edit = false
+        edit = false
         super.onCreate(savedInstanceState)
 
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
